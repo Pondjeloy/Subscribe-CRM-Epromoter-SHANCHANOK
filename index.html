@@ -1056,7 +1056,7 @@ function app() {
     _parseNotes(s) {
       if (!s?.trim()) return [];
       return s.split(/\r?\n/).map(l=>l.trim()).filter(Boolean).map(line => {
-        const m = line.match(/^(\d{1,2}\/\d{1,2}\/\d{4}\s+\d{2}:\d{2})\s*[—\-]\s*([\s\S]+)$/);
+        const m = line.match(/^(\d{1,2}\/\d{1,2}\/\d{4})(?:\s+\d{2}:\d{2})?\s*[—\-]\s*([\s\S]+)$/);
         return m ? {date:m[1], text:m[2].trim()} : {date:'', text:line};
       }).reverse();
     },
@@ -1340,8 +1340,7 @@ function app() {
     async addNote() {
       const text = this.newNote.trim(); if (!text) return;
       const now = new Date();
-      const date = now.toLocaleDateString('th-TH',{day:'2-digit',month:'2-digit',year:'numeric'})+' '
-                  +String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+      const date = now.toLocaleDateString('th-TH',{day:'2-digit',month:'2-digit',year:'numeric'});
       this.newNote = '';
       await this._syncNote(date+' — '+text);
     },
